@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<supra_config>
+    <devices>
+        <inputs>
+        	<input type="UltrasoundInterfaceIGTL" id="US-IGTL">
+				<param name="port" type="uint32_t">
+					18944
+				</param>
+				<param name="hostname" type="string">
+					192.168.1.4
+				</param>
+			</input>
+        </inputs>
+        <outputs>
+            <output type="MetaImageOutputDevice" id="MHD">
+                <param name="createSequences" type="bool">1</param>
+                <param name="filename" type="string">mhd_output</param>
+            </output>
+        </outputs>
+        <nodes>
+            <node type="BeamformingNode" id="BEAM">
+                <param name="windowParameter" type="double">0.5</param>
+                <param name="windowType" type="string">Hamming</param>
+            </node>
+            <node type="HilbertFirEnvelopeNode" id="DEMO"/>
+            <node type="FrequencyLimiterNode" id="LIMIT">
+                <param name="maxFrequency" type="double">50</param>
+            </node>
+            <node type="LogCompressorNode" id="LOGC">
+                <param name="dynamicRange" type="double">80</param>
+                <param name="inMax" type="double">32600</param>
+            </node>
+            <node type="ScanConverterNode" id="SCAN"/>
+        </nodes>
+    </devices>
+    <connections>
+        <connection>
+            <from id="BEAM" port="0"/>
+            <to id="DEMO" port="0"/>
+        </connection>
+        <connection>
+            <from id="BEAM" port="0"/>
+            <to id="MHD" port="0"/>
+        </connection>
+        <connection>
+            <from id="DEMO" port="0"/>
+            <to id="LOGC" port="0"/>
+        </connection>
+        <connection>
+            <from id="LIMIT" port="0"/>
+            <to id="BEAM" port="0"/>
+        </connection>
+        <connection>
+            <from id="LOGC" port="0"/>
+            <to id="SCAN" port="0"/>
+        </connection>
+        <connection>
+            <from id="US-IGTL" port="0"/>
+            <to id="LIMIT" port="0"/>
+        </connection>
+    </connections>
+</supra_config>

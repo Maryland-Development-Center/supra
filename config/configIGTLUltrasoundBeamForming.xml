@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<supra_config>
+    <devices>
+        <inputs>
+            <input type="UltrasoundInterfaceIGTL" id="US-IGTL">
+                <param name="hostname" type="string">192.168.1.4</param>
+                <param name="port" type="uint32_t">18944</param>
+            </input>
+        </inputs>
+        <outputs/>
+        <nodes>
+            <node type="HilbertEnvelopeNode" id="HilbertEnvelopeNode_1">
+                <param name="decimation" type="uint32_t">1</param>
+                <param name="outputType" type="DataType">int16_t</param>
+            </node>
+            <node type="LogCompressorNode" id="LogCompressorNode_1">
+                <param name="inMax" type="double">32767</param>
+                <param name="outputType" type="DataType">float</param>
+            </node>
+        </nodes>
+    </devices>
+    <connections>
+        <connection>
+            <from id="LogCompressorNode_1" port="0"/>
+            <to id="HilbertEnvelopeNode_1" port="0"/>
+        </connection>
+        <connection>
+            <from id="US-IGTL" port="0"/>
+            <to id="LogCompressorNode_1" port="0"/>
+        </connection>
+    </connections>
+</supra_config>
