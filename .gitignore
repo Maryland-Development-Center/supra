@@ -10,3 +10,5 @@ doc/supraParameters/
 *.orig
 data*/
 cmake-build-*
+.vscode/
+.vscode/
