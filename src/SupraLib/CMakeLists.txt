@@ -373,9 +373,13 @@ IF(SUPRA_DEVICE_TRACKING_SIM)
 ENDIF()
 IF(SUPRA_DEVICE_TRACKING_IGTL)
 	SET(SUPRA_Lib_SOURCE ${SUPRA_Lib_SOURCE}
-		InputOutput/TrackerInterfaceIGTL.cpp)
+		InputOutput/TrackerInterfaceIGTL.cpp
+		InputOutput/UltrasoundInterfaceIGTL.cpp
+		)
 	SET(SUPRA_Lib_HEADERS ${SUPRA_Lib_HEADERS}
-		InputOutput/TrackerInterfaceIGTL.h)
+		InputOutput/TrackerInterfaceIGTL.h
+		InputOutput/UltrasoundInterfaceIGTL.h
+		)
 	SET(SUPRA_Lib_INCLUDEDIRS ${SUPRA_Lib_INCLUDEDIRS}
 		${OpenIGTLink_INCLUDE_DIRS})
 	SET(SUPRA_Lib_LIBDIRS ${SUPRA_Lib_LIBDIRS}

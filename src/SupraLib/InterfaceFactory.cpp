@@ -30,6 +30,7 @@
 #include "InputOutput/TrackerInterfaceSimulated.h"
 #include "InputOutput/TrackerInterfaceIGTL.h"
 #include "InputOutput/TrackerInterfaceROS.h"
+#include "InputOutput/UltrasoundInterfaceIGTL.h"
 #include "InputOutput/UltrasoundInterfaceSimulated.h"
 #include "InputOutput/UltrasoundInterfaceUltrasonix.h"
 #include "InputOutput/OpenIGTLinkOutputDevice.h"
@@ -94,6 +95,10 @@ namespace supra
 		}
 #endif //HAVE_DEVICE_TRACKING_SIM
 #ifdef HAVE_DEVICE_TRACKING_IGTL
+		if (deviceType == "UltrasoundInterfaceIGTL")
+		{
+			retVal = make_shared<UltrasoundInterfaceIGTL>(*pG, nodeID);
+		}
 		if (deviceType == "TrackerInterfaceIGTL")
 		{
 			retVal = make_shared<TrackerInterfaceIGTL>(*pG, nodeID);
