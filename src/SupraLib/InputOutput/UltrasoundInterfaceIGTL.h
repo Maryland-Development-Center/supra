@@ -25,6 +25,9 @@
 #include <igtlClientSocket.h>
 #include <igtlMessageHeader.h>
 
+#include "Beamformer/RxBeamformerParameters.h"
+
+
 namespace supra
 {
 	class UltrasoundInterfaceIGTL : public AbstractInput
@@ -63,12 +66,14 @@ namespace supra
 		double m_reconnectInterval;
 		std::string m_hostname;
 		uint32_t m_port;
-
+		
 		std::atomic_bool m_frozen;
 
 		std::mutex m_objectMutex;
 		igtl::ClientSocket::Pointer m_socket;
 		bool m_connected;
+
+		std::shared_ptr<RxBeamformerParameters> m_rxparams;
 	};
 }
 

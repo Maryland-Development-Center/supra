@@ -9,6 +9,15 @@
         </inputs>
         <outputs/>
         <nodes>
+            <node type="BeamformingNode" id="BeamformingNode_1">
+                <param name="beamformerType" type="string">DelayAndSum</param>
+                <param name="interpolateTransmits" type="bool">0</param>
+                <param name="outputType" type="DataType">int16_t</param>
+                <param name="windowType" type="string">Gauss</param>
+            </node>
+            <node type="FrequencyLimiterNode" id="FrequencyLimiterNode_1">
+                <param name="maxFrequency" type="double">20</param>
+            </node>
             <node type="HilbertEnvelopeNode" id="HilbertEnvelopeNode_1">
                 <param name="decimation" type="uint32_t">1</param>
                 <param name="outputType" type="DataType">int16_t</param>
@@ -17,16 +26,30 @@
                 <param name="inMax" type="double">32767</param>
                 <param name="outputType" type="DataType">float</param>
             </node>
+            <node type="Preview BeamformingNode_10" id="PREV_BeamformingNode_1_0"/>
+            <node type="Preview US-IGTL0" id="PREV_US-IGTL_0"/>
         </nodes>
     </devices>
     <connections>
+        <connection>
+            <from id="BeamformingNode_1" port="0"/>
+            <to id="LogCompressorNode_1" port="0"/>
+        </connection>
+        <connection>
+            <from id="BeamformingNode_1" port="0"/>
+            <to id="PREV_BeamformingNode_1_0" port="0"/>
+        </connection>
         <connection>
             <from id="LogCompressorNode_1" port="0"/>
             <to id="HilbertEnvelopeNode_1" port="0"/>
         </connection>
         <connection>
             <from id="US-IGTL" port="0"/>
-            <to id="LogCompressorNode_1" port="0"/>
+            <to id="BeamformingNode_1" port="0"/>
+        </connection>
+        <connection>
+            <from id="US-IGTL" port="0"/>
+            <to id="PREV_US-IGTL_0" port="0"/>
         </connection>
     </connections>
 </supra_config>

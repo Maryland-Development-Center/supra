@@ -12,6 +12,9 @@
 
 #include "UltrasoundInterfaceIGTL.h"
 #include "USImage.h"
+#include "Beamformer/USRawData.h"
+#include "Beamformer/USTransducer.h"
+#include "Beamformer/RxBeamformerParameters.h"
 
 #include <igtlImageMessage.h>
 #include <igtlClientSocket.h>
@@ -30,6 +33,16 @@ namespace supra
 		, m_connected(false)
 		, m_frozen(false)
 	{
+		m_rxparams = make_shared<RxBeamformerParameters>(
+			127,
+			vec2s{127, 1},
+			1540,
+			std::vector<float> (127, 52.5397),
+			std::vector<ScanlineRxParameters3D> (127, ScanlineRxParameters3D()),
+			std::vector<float> (127, 0),
+			std::vector<float> {0},
+			2048
+		);
 		m_valueRangeDictionary.set<double>("reconnectInterval", 0.01, 3600, 0.1, "Reconnect Interval [s]");
 		m_valueRangeDictionary.set<string>("hostname", "", "Server hostname");
 		m_valueRangeDictionary.set<uint32_t>("port", 1, 65535, 18944, "Server port");
@@ -167,8 +180,9 @@ namespace supra
 				ContainerFactory::getNextStream(),
 				imageData->GetImageSize()
 			);
+			
 			auto props = make_shared<USImageProperties>(
-				vec2s{dimms[1], 1},
+				vec2s{dimms[1] , 1},
 				dimms[0],
 				USImageProperties::ImageType::BMode,
 				USImageProperties::ImageState::RF,
@@ -176,13 +190,29 @@ namespace supra
 				52.5397
 			);
 			memcpy(pData->get(), imageData->GetScalarPointer(), imageData->GetImageSize());
+			auto pImage = make_shared<USRawData>(
+				dimms[1],
+				dimms[1],
+				vec2s{1, dimms[1]},
+				dimms[1],
+				dimms[0],
+				30000000, 
+				pData,
+				m_rxparams,
+				props,
+				ts->GetTimeStamp(),
+				ts->GetTimeStamp()
+			);
+			/*
+			memcpyTransposed(pData->get(), static_cast<int16_t *>(imageData->GetScalarPointer()), dimms[1], dimms[0]);
 			auto pImage = make_shared<USImage>(
-				vec2s{dimms[0], dimms[1]},
+				vec2s{dimms[0], dimms[1]}, // 2048 x 127
 				pData,
 				props,
 				ts->GetTimeStamp(),
 				ts->GetTimeStamp()
 			);
+			*/
 			addData<0>(pImage);
 			return 1;
 		} else {
