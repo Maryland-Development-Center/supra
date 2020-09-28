@@ -206,7 +206,7 @@ namespace supra
 				{
 					shared_ptr<QImage> qtimage;
 					tuple<double, double, bool> worldSize;
-					m_layerToShow = m_layerToShow % inRawData->getNumScanlines();
+					m_layerToShow = 0; //m_layerToShow % inRawData->getNumScanlines();
 
 					auto numChannels = inRawData->getNumReceivedChannels();
 					auto numSamples = inRawData->getNumSamples();
