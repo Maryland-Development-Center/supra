@@ -554,7 +554,8 @@ namespace supra
 			gRawData = std::make_shared<Container<ChannelDataType> >(LocationGpu, *gRawData);
 		}
 
-		size_t numelOut = m_numRxScanlines*m_rxNumDepths;
+		size_t numelOut = m_numRxScanlines*m_rxNumDepths*sizeof(ImageDataType);
+		logging::log_error("numRxScanlines: ", m_numRxScanlines, ", rxNumDepths: ", m_rxNumDepths);
 		shared_ptr<Container<ImageDataType> > pData = std::make_shared<Container<ImageDataType> >(ContainerLocation::LocationGpu, gRawData->getStream(), numelOut);
 
 		double dt = 1.0 / rawData->getSamplingFrequency();
@@ -619,6 +620,9 @@ namespace supra
 				);
 		}
 		else {
+			logging::log_error("Num Elements: ", rawData->getNumElements(), " Received Channels: ", rawData->getNumReceivedChannels());
+			logging::log_error("Num Samples: ", rawData->getNumSamples(), " TxScanlines: ", rawData->getNumScanlines(), " RxScanlines: ", m_numRxScanlines);
+			logging::log_error("Num depths: ", m_rxNumDepths);
 			beamformingFunction2D(
 				true,
 				interpolateBetweenTransmits,

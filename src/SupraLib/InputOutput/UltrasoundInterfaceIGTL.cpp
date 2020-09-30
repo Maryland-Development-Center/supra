@@ -33,6 +33,7 @@ namespace supra
 		, m_connected(false)
 		, m_frozen(false)
 	{
+		/*
 		m_rxparams = make_shared<RxBeamformerParameters>(
 			127,
 			vec2s{127, 1},
@@ -43,6 +44,9 @@ namespace supra
 			std::vector<float> {0},
 			2048
 		);
+		*/
+		auto config = RxBeamformerParameters::readMetaDataForMock("/home/mdc/supra-igtl/config/IntersonConfig.mock"); //m_rxparams,
+		m_rxparams = config->getRxBeamformerParameters();
 		m_valueRangeDictionary.set<double>("reconnectInterval", 0.01, 3600, 0.1, "Reconnect Interval [s]");
 		m_valueRangeDictionary.set<string>("hostname", "", "Server hostname");
 		m_valueRangeDictionary.set<uint32_t>("port", 1, 65535, 18944, "Server port");
@@ -175,11 +179,7 @@ namespace supra
 			imageData->GetTimeStamp(ts);
 			int dimms[3];
 			imageData->GetDimensions(dimms); // 2048 127 1
-			auto pData = make_shared<Container<int16_t>>(
-				LocationHost,
-				ContainerFactory::getNextStream(),
-				imageData->GetImageSize()
-			);
+			auto dataHost = make_shared<Container<int16_t>>(LocationHost, ContainerFactory::getNextStream(), imageData->GetImageSize());
 			
 			auto props = make_shared<USImageProperties>(
 				vec2s{dimms[1] , 1},
@@ -189,7 +189,7 @@ namespace supra
 				USImageProperties::TransducerType::Linear,
 				52.5397
 			);
-			memcpy(pData->get(), imageData->GetScalarPointer(), imageData->GetImageSize());
+			memcpy(dataHost->get(), imageData->GetScalarPointer(), imageData->GetImageSize());
 			auto pImage = make_shared<USRawData>(
 				dimms[1],
 				dimms[1],
@@ -197,7 +197,7 @@ namespace supra
 				dimms[1],
 				dimms[0],
 				30000000, 
-				pData,
+				dataHost,
 				m_rxparams,
 				props,
 				ts->GetTimeStamp(),
