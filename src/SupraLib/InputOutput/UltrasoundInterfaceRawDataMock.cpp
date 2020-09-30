@@ -56,6 +56,8 @@ namespace supra
 		try
 		{
 			m_protoRawData = RxBeamformerParameters::readMetaDataForMock(m_mockMetadataFilename);
+
+			m_numel = m_protoRawData->getNumReceivedChannels()*m_protoRawData->getNumSamples()*m_protoRawData->getNumScanlines();
 			// initialize m_mockDataStreams and m_sequenceLengths by getting the file sizes of all datafiles
 			m_mockDataStramReadBuffers.resize(m_mockDataFilenames.size());
 			m_mockDataStreams.resize(m_mockDataFilenames.size());
