@@ -45,7 +45,7 @@ namespace supra
 			2048
 		);
 		*/
-		auto config = RxBeamformerParameters::readMetaDataForMock("/home/mdc/supra-igtl/config/IntersonConfig.mock"); //m_rxparams,
+		auto config = RxBeamformerParameters::readMetaDataForMock("/home/mdc/supra-igtl/build/config-interson.json"); //m_rxparams,
 		m_rxparams = config->getRxBeamformerParameters();
 		m_valueRangeDictionary.set<double>("reconnectInterval", 0.01, 3600, 0.1, "Reconnect Interval [s]");
 		m_valueRangeDictionary.set<string>("hostname", "", "Server hostname");
