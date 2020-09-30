@@ -45,11 +45,14 @@ namespace supra
 			2048
 		);
 		*/
+		/*
 		auto config = RxBeamformerParameters::readMetaDataForMock("/home/mdc/supra-igtl/build/config-interson.json"); //m_rxparams,
 		m_rxparams = config->getRxBeamformerParameters();
+		*/
 		m_valueRangeDictionary.set<double>("reconnectInterval", 0.01, 3600, 0.1, "Reconnect Interval [s]");
 		m_valueRangeDictionary.set<string>("hostname", "", "Server hostname");
 		m_valueRangeDictionary.set<uint32_t>("port", 1, 65535, 18944, "Server port");
+		m_valueRangeDictionary.set<string>("metaDataFilename", "", "Meta data file");
 		configurationChanged();
 	}
 	void UltrasoundInterfaceIGTL::initializeDevice()
@@ -241,6 +244,14 @@ namespace supra
 			m_port = m_configurationDictionary.get<int>("port");
 			reconnectNeccessary = true;
 		}
+		
+		if (configKey == "metaDataFilename") 
+		{
+			m_metaDataFilename = m_configurationDictionary.get<string>("metaDataFilename");
+			logging::log_info("UltrasoundInterfaceIGTL: Reloaded metadata file: ", m_metaDataFilename);
+			auto config = RxBeamformerParameters::readMetaDataForMock("/home/mdc/supra-igtl/build/config-interson.json"); //m_rxparams,
+			m_rxparams = config->getRxBeamformerParameters();
+		}
 
 		if (reconnectNeccessary)
 		{
@@ -255,5 +266,10 @@ namespace supra
 
 		m_hostname = m_configurationDictionary.get<string>("hostname");
 		m_port = m_configurationDictionary.get<uint32_t>("port");
+		
+		m_metaDataFilename = m_configurationDictionary.get<string>("metaDataFilename");
+		logging::log_info("UltrasoundInterfaceIGTL: Loaded metadata file: ", m_metaDataFilename);
+		auto config = RxBeamformerParameters::readMetaDataForMock("/home/mdc/supra-igtl/build/config-interson.json"); //m_rxparams,
+		m_rxparams = config->getRxBeamformerParameters();
 	}
 }

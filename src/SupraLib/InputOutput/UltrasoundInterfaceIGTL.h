@@ -73,6 +73,7 @@ namespace supra
 		igtl::ClientSocket::Pointer m_socket;
 		bool m_connected;
 
+		std::string m_metaDataFilename;
 		std::shared_ptr<const RxBeamformerParameters> m_rxparams;
 	};
 }
