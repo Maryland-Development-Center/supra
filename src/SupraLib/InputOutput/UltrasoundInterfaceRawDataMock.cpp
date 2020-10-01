@@ -187,6 +187,7 @@ namespace supra
 	{
 		auto mockDataHost = make_shared<Container<int16_t> >(LocationHost, ContainerFactory::getNextStream(), m_numel);
 
+		logging::log_error(m_numel, " ", m_numel * sizeof(int16_t));
 		m_mockDataStreams[m_sequenceIndex]->read(reinterpret_cast<char*>(mockDataHost->get()), m_numel * sizeof(int16_t));
 		m_pMockData = make_shared<Container<int16_t> >(LocationGpu, *mockDataHost);
 		// advance to the next image and sequence where required

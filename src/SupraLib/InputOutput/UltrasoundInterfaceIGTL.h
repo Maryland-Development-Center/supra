@@ -18,6 +18,7 @@
 #ifdef HAVE_DEVICE_TRACKING_IGTL
 
 #include <AbstractInput.h>
+#include <Container.h>
 #include <TrackerDataSet.h>
 
 #include <mutex>
@@ -75,6 +76,7 @@ namespace supra
 
 		std::string m_metaDataFilename;
 		std::shared_ptr<const RxBeamformerParameters> m_rxparams;
+		std::shared_ptr<Container<int16_t>> m_data;
 	};
 }
 

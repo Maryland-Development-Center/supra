@@ -551,6 +551,7 @@ namespace supra
 		auto gRawData = rawData->getData<ChannelDataType>();
 		if (!gRawData->isGPU() && !gRawData->isBoth())
 		{
+			logging::log_error("need to put data in GPU");
 			gRawData = std::make_shared<Container<ChannelDataType> >(LocationGpu, *gRawData);
 		}
 

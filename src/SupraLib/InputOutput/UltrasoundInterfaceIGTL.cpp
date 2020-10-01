@@ -193,10 +193,11 @@ namespace supra
 				52.5397
 			);
 			memcpy(dataHost->get(), imageData->GetScalarPointer(), imageData->GetImageSize());
+			//m_data = make_shared<Container<int16_t>>(LocationGpu, *dataHost);
 			auto pImage = make_shared<USRawData>(
 				dimms[1],
 				dimms[1],
-				vec2s{1, dimms[1]},
+				vec2s{dimms[1], 1},
 				dimms[1],
 				dimms[0],
 				30000000, 
@@ -249,7 +250,7 @@ namespace supra
 		{
 			m_metaDataFilename = m_configurationDictionary.get<string>("metaDataFilename");
 			logging::log_info("UltrasoundInterfaceIGTL: Reloaded metadata file: ", m_metaDataFilename);
-			auto config = RxBeamformerParameters::readMetaDataForMock("/home/mdc/supra-igtl/build/config-interson.json"); //m_rxparams,
+			auto config = RxBeamformerParameters::readMetaDataForMock(m_metaDataFilename);
 			m_rxparams = config->getRxBeamformerParameters();
 		}
 
@@ -266,10 +267,16 @@ namespace supra
 
 		m_hostname = m_configurationDictionary.get<string>("hostname");
 		m_port = m_configurationDictionary.get<uint32_t>("port");
-		
 		m_metaDataFilename = m_configurationDictionary.get<string>("metaDataFilename");
-		logging::log_info("UltrasoundInterfaceIGTL: Loaded metadata file: ", m_metaDataFilename);
-		auto config = RxBeamformerParameters::readMetaDataForMock("/home/mdc/supra-igtl/build/config-interson.json"); //m_rxparams,
-		m_rxparams = config->getRxBeamformerParameters();
+		logging::log_error("UltrasoundInterfaceIGTL: Loaded metadata file: ", m_metaDataFilename);
+		if (m_metaDataFilename.length()) 
+		{
+			auto config = RxBeamformerParameters::readMetaDataForMock(m_metaDataFilename);
+			if (config) 
+			{
+				m_rxparams = config->getRxBeamformerParameters();
+
+			}
+		}
 	}
 }
