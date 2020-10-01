@@ -49,6 +49,7 @@ namespace supra
 		auto config = RxBeamformerParameters::readMetaDataForMock("/home/mdc/supra-igtl/build/config-interson.json"); //m_rxparams,
 		m_rxparams = config->getRxBeamformerParameters();
 		*/
+		m_callFrequency.setName("IGTLRFReceiver");
 		m_valueRangeDictionary.set<double>("reconnectInterval", 0.01, 3600, 0.1, "Reconnect Interval [s]");
 		m_valueRangeDictionary.set<string>("hostname", "", "Server hostname");
 		m_valueRangeDictionary.set<uint32_t>("port", 1, 65535, 18944, "Server port");
@@ -59,6 +60,7 @@ namespace supra
 	{
 		//try to connect already here, so we are directly good to go!
 		lock_guard<mutex> lock(m_objectMutex);
+		setUpTimer(10);
 		m_socket = igtl::ClientSocket::New();
 		connectToSever();
 	}
@@ -91,6 +93,7 @@ namespace supra
 			// Wait for a reply
 			if (m_connected)
 			{
+				m_callFrequency.measure();
 				igtl::MessageHeader::Pointer headerMsg = igtl::MessageHeader::New();
 				headerMsg->InitPack();
 				int rs = m_socket->Receive(headerMsg->GetPackPointer(), headerMsg->GetPackSize());
@@ -122,6 +125,7 @@ namespace supra
 						}
 					}
 				}
+				m_callFrequency.measureEnd();
 			}
 			else {
 				logging::log_warn("UltrasoundInterfaceIGTL: Could not reconnect to the server '", m_hostname, ":", m_port, "'. Retrying in ", m_reconnectInterval, "s.");

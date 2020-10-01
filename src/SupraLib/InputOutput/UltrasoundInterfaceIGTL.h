@@ -64,6 +64,7 @@ namespace supra
 
 		int receiveImageData(igtl::MessageHeader::Pointer & header);
 
+		double m_frequency;
 		double m_reconnectInterval;
 		std::string m_hostname;
 		uint32_t m_port;
