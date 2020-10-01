@@ -33,7 +33,6 @@ namespace supra
 		, m_connected(false)
 		, m_frozen(false)
 	{
-		/*
 		m_rxparams = make_shared<RxBeamformerParameters>(
 			127,
 			vec2s{127, 1},
@@ -44,7 +43,6 @@ namespace supra
 			std::vector<float> {0},
 			2048
 		);
-		*/
 		/*
 		auto config = RxBeamformerParameters::readMetaDataForMock("/home/mdc/supra-igtl/build/config-interson.json"); //m_rxparams,
 		m_rxparams = config->getRxBeamformerParameters();
@@ -271,6 +269,7 @@ namespace supra
 
 		m_hostname = m_configurationDictionary.get<string>("hostname");
 		m_port = m_configurationDictionary.get<uint32_t>("port");
+		/*
 		m_metaDataFilename = m_configurationDictionary.get<string>("metaDataFilename");
 		logging::log_error("UltrasoundInterfaceIGTL: Loaded metadata file: ", m_metaDataFilename);
 		if (m_metaDataFilename.length()) 
@@ -282,5 +281,6 @@ namespace supra
 
 			}
 		}
+		*/
 	}
 }
