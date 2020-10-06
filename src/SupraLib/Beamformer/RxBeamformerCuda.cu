@@ -464,10 +464,13 @@ namespace supra
 			static_cast<unsigned int>((numZs + blockSize.y - 1) / blockSize.y));
 		if (interpolateRFlines)
 		{
+			logging::log_error("interpolate between lines");
 			if (interpolateBetweenTransmits)
 			{
+				logging::log_error("interpolating between transits");
 				if (elementToChannelMap)
 				{
+					logging::log_error("map?");
 					rxBeamformingDTSPACEKernel<SampleBeamformer, true, true, true> << <gridSize, blockSize, 0, stream >> > (
 						numTransducerElements, numReceivedChannels, numTimesteps, RF,
 						numTxScanlines, numRxScanlines, scanlines,
@@ -482,8 +485,10 @@ namespace supra
 				}
 			}
 			else {
+				logging::log_error("not interpolating between transits");
 				if (elementToChannelMap)
 				{
+					logging::log_error("map?");
 					rxBeamformingDTSPACEKernel<SampleBeamformer, true, false, true> << <gridSize, blockSize, 0, stream >> > (
 						numTransducerElements, numReceivedChannels, numTimesteps, RF,
 						numTxScanlines, numRxScanlines, scanlines,
@@ -499,6 +504,7 @@ namespace supra
 			}
 		}
 		else {
+			logging::log_error("not interpolate between lines");
 			if (interpolateBetweenTransmits)
 			{
 				if (elementToChannelMap)
@@ -553,10 +559,10 @@ namespace supra
 		{
 			logging::log_error("need to put data in GPU");
 			gRawData = std::make_shared<Container<ChannelDataType> >(LocationGpu, *gRawData);
+			logging::log_error("put data in GPU");
 		}
 
 		size_t numelOut = m_numRxScanlines*m_rxNumDepths*sizeof(ImageDataType);
-		logging::log_error("numRxScanlines: ", m_numRxScanlines, ", rxNumDepths: ", m_rxNumDepths);
 		shared_ptr<Container<ImageDataType> > pData = std::make_shared<Container<ImageDataType> >(ContainerLocation::LocationGpu, gRawData->getStream(), numelOut);
 
 		double dt = 1.0 / rawData->getSamplingFrequency();
@@ -621,9 +627,11 @@ namespace supra
 				);
 		}
 		else {
+			/*
+			logging::log_error("numRxScanlines: ", m_numRxScanlines, ", rxNumDepths: ", m_rxNumDepths);
 			logging::log_error("Num Elements: ", rawData->getNumElements(), " Received Channels: ", rawData->getNumReceivedChannels());
-			logging::log_error("Num Samples: ", rawData->getNumSamples(), " TxScanlines: ", rawData->getNumScanlines(), " RxScanlines: ", m_numRxScanlines);
-			logging::log_error("Num depths: ", m_rxNumDepths);
+			logging::log_error("Num Samples: ", rawData->getNumSamples(), " TxScanlines: ", rawData->getNumScanlines());
+			*/
 			beamformingFunction2D(
 				true,
 				interpolateBetweenTransmits,
@@ -663,7 +671,6 @@ namespace supra
 			m_editedImageProperties,
 			rawData->getReceiveTimestamp(),
 			rawData->getSyncTimestamp());
-
 		return retImage;
 	}
 
