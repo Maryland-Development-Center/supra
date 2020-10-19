@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<supra_config>
+    <devices>
+        <inputs>
+            <input type="UltrasoundInterfaceRawDataMock" id="US-Mock">
+                <param name="mockDataFilename" type="string">data/linearProbe_IPCAI_128-2_0.raw</param>
+                <param name="mockMetaDataFilename" type="string">data/linearProbe_IPCAI_128-2.mock</param>
+            </input>
+        </inputs>
+        <nodes>
+            <node type="BeamformingMVpcgNode" id="BeamformingMVpcgNode_1"/>
+            <node type="HilbertFirEnvelopeNode" id="DEMO"/>
+            <node type="FrequencyLimiterNode" id="LIMIT">
+                <param name="maxFrequency" type="double">50</param>
+            </node>
+            <node type="LogCompressorNode" id="LOGC">
+                <param name="dynamicRange" type="double">80</param>
+                <param name="inMax" type="double">32600</param>
+            </node>
+>
+            <node type="RawDelayNode" id="RawDelayNode_1"/>
+            <node type="ScanConverterNode" id="SCAN"/>
+        </nodes>
+    </devices>
+    <connections>
+        <connection>
+            <from id="BeamformingMVpcgNode_1" port="0"/>
+            <to id="DEMO" port="0"/>
+        </connection>
+        <connection>
+            <from id="BeamformingMVpcgNode_1" port="0"/>
+            <to id="PREV_BeamformingMVpcgNode_1_0" port="0"/>
+        </connection>
+        <connection>
+            <from id="DEMO" port="0"/>
+            <to id="LOGC" port="0"/>
+        </connection>
+        <connection>
+            <from id="LIMIT" port="0"/>
+            <to id="RawDelayNode_1" port="0"/>
+        </connection>
+        <connection>
+            <from id="LOGC" port="0"/>
+            <to id="SCAN" port="0"/>
+        </connection>
+        <connection>
+            <from id="RawDelayNode_1" port="0"/>
+            <to id="BeamformingMVpcgNode_1" port="0"/>
+        </connection>
+        <connection>
+            <from id="SCAN" port="0"/>
+            <to id="PREV_SCAN_0" port="0"/>
+        </connection>
+        <connection>
+            <from id="US-Mock" port="0"/>
+            <to id="LIMIT" port="0"/>
+        </connection>
+        <connection>
+            <from id="US-Mock" port="0"/>
+            <to id="PREV_US-Mock_0" port="0"/>
+        </connection>
+    </connections>
+</supra_config>

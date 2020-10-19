@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<supra_config>
+    <devices>
+        <inputs>
+            <input type="UltrasoundInterfaceIGTL" id="US-IGTL">
+                <param name="hostname" type="string">192.168.0.157</param>
+                <param name="metaDataFilename" type="string">/home/mdc/supra/config/config-interson-gen.json</param>
+                <param name="port" type="uint32_t">18944</param>
+            </input>
+        </inputs>
+        <outputs/>
+        <nodes>
+            <node type="BeamformingMVpcgNode" id="BeamformingMVpcgNode_1"/>
+            <node type="HilbertFirEnvelopeNode" id="DEMO"/>
+            <node type="FrequencyLimiterNode" id="LIMIT">
+                <param name="maxFrequency" type="double">50</param>
+            </node>
+            <node type="LogCompressorNode" id="LOGC">
+                <param name="dynamicRange" type="double">80</param>
+                <param name="inMax" type="double">32600</param>
+            </node>
+            <node type="RawDelayNode" id="RawDelayNode_1"/>
+            <node type="ScanConverterNode" id="SCAN"/>
+        </nodes>
+    </devices>
+    <connections>
+        <connection>
+            <from id="BeamformingMVpcgNode_1" port="0"/>
+            <to id="DEMO" port="0"/>
+        </connection>
+        <connection>
+            <from id="DEMO" port="0"/>
+            <to id="LOGC" port="0"/>
+        </connection>
+        <connection>
+            <from id="LOGC" port="0"/>
+            <to id="SCAN" port="0"/>
+        </connection>
+        <connection>
+            <from id="US-IGTL" port="0"/>
+            <to id="BeamformingMVpcgNode_1" port="0"/>
+        </connection>
+    </connections>
+</supra_config>

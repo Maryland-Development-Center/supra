@@ -3,9 +3,9 @@
     <devices>
         <inputs>
             <input type="UltrasoundInterfaceIGTL" id="US-IGTL">
-                <param name="hostname" type="string">192.168.1.4</param>
+                <param name="hostname" type="string">192.168.0.157</param>
                 <param name="port" type="uint32_t">18944</param>
-                <param name="metaDataFilename" type="string">/home/mdc/supra-igtl/config/config-interson.json</param>
+                <param name="metaDataFilename" type="string">/home/mdc/supra/config/config-interson-gen.json</param>
             </input>
         </inputs>
         <outputs/>

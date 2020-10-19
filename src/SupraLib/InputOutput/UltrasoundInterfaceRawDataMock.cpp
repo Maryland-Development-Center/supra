@@ -136,7 +136,7 @@ namespace supra
 		if (!m_frozen)
 		{
 			double timestamp = getCurrentTime();
-
+			logging::log_error("hello world", m_protoRawData->getNumSamples());
 			m_callFrequency.measure();
 			shared_ptr<USRawData> pRawData = std::make_shared<USRawData>(
 				m_protoRawData->getNumScanlines(),
@@ -187,7 +187,6 @@ namespace supra
 	{
 		auto mockDataHost = make_shared<Container<int16_t> >(LocationHost, ContainerFactory::getNextStream(), m_numel);
 
-		logging::log_error(m_numel, " ", m_numel * sizeof(int16_t));
 		m_mockDataStreams[m_sequenceIndex]->read(reinterpret_cast<char*>(mockDataHost->get()), m_numel * sizeof(int16_t));
 		m_pMockData = make_shared<Container<int16_t> >(LocationGpu, *mockDataHost);
 		// advance to the next image and sequence where required

@@ -189,12 +189,12 @@ namespace supra
 			auto dataHost = make_shared<Container<int16_t>>(LocationHost, ContainerFactory::getNextStream(), imageData->GetImageSize());
 			
 			auto props = make_shared<USImageProperties>(
-				vec2s{dimms[1] , 1},
+				vec2s{127 , 1},
 				dimms[0],
 				USImageProperties::ImageType::BMode,
-				USImageProperties::ImageState::RF,
+				USImageProperties::ImageState::RawDelayed,
 				USImageProperties::TransducerType::Linear,
-				52.5397
+				25
 			);
 			memcpy(dataHost->get(), imageData->GetScalarPointer(), imageData->GetImageSize());
 			//m_data = make_shared<Container<int16_t>>(LocationGpu, *dataHost);
