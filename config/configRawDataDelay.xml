@@ -21,6 +21,9 @@
             <node type="RawDelayNode" id="RawDelayNode_1"/>
             <node type="ScanConverterNode" id="SCAN"/>
         </nodes>
+        <outputs>
+            <output type="MetaImageOutputDevice" id="writer"/>
+        </outputs>
     </devices>
     <connections>
         <connection>
